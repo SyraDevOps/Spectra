@@ -1,0 +1,23 @@
+ :root {
+    --cor-fundo: #121212;
+    --cor-menu: #1e1e1e;
+    --cor-borda: #333;
+    --cor-principal: #9b59b6;
+    --cor-destaque: #8e44ad;
+    --cor-texto: #ecf0f1;
+    --cor-texto-secundario: #bdc3c7;
+    --cor-vermelho: #c0392b;
+}
+
+body {
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+}
+
+button {
+    background-color: var(--cor-principal);
+}
+
+button:hover {
+    background-color: var(--cor-destaque);
+}
