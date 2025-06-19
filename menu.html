@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spectra | Hub</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --cor-fundo: #121212;
+            --cor-borda: #333;
+            --cor-principal: #9b59b6;
+            --cor-destaque: #8e44ad;
+            --cor-texto: #ecf0f1;
+            --cor-texto-secundario: #bdc3c7;
+            --cor-particula: rgba(155, 89, 182, 0.7);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--cor-fundo);
+            color: var(--cor-texto);
+            height: 100vh;
+            overflow: hidden;
+            display: flex; /* Usando flex para o layout de dois painéis */
+        }
+
+        /* 1. Painel do Menu (Esquerda) */
+        .menu-panel {
+            width: 40%;
+            max-width: 500px;
+            padding: 0 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .menu-logo {
+            font-size: 4em;
+            font-weight: 700;
+            color: var(--cor-principal);
+            margin-bottom: 20px;
+            animation: fadeInFromLeft 0.8s ease-out forwards;
+        }
+        
+        .menu-tagline {
+            font-size: 1.1em;
+            color: var(--cor-texto-secundario);
+            margin-bottom: 50px;
+            animation: fadeInFromLeft 0.8s ease-out 0.2s forwards;
+            opacity: 0; /* Inicia invisível */
+        }
+
+        .main-nav .nav-item {
+            display: block;
+            text-decoration: none;
+            color: var(--cor-texto-secundario);
+            font-size: 1.5em;
+            font-weight: 600;
+            margin-bottom: 25px;
+            padding: 10px 0;
+            position: relative;
+            transition: color 0.3s ease;
+            
+            /* Animação de entrada */
+            opacity: 0;
+            animation: fadeInFromLeft 0.5s ease-out forwards;
+        }
+        
+        /* Atraso em cascata para cada item */
+        .main-nav .nav-item:nth-child(1) { animation-delay: 0.5s; }
+        .main-nav .nav-item:nth-child(2) { animation-delay: 0.6s; }
+        .main-nav .nav-item:nth-child(3) { animation-delay: 0.7s; }
+        .main-nav .nav-item:nth-child(4) { animation-delay: 0.8s; }
+
+
+        .main-nav .nav-item:hover {
+            color: var(--cor-texto);
+        }
+
+        /* Linha animada do hover */
+        .main-nav .nav-item::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background-color: var(--cor-principal);
+            transition: width 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .main-nav .nav-item:hover::before {
+            width: 100%;
+        }
+
+
+        /* 2. Painel da Animação (Direita) */
+        .animation-panel {
+            flex-grow: 1; /* Ocupa o resto do espaço */
+            position: relative;
+        }
+
+        #particle-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 3. Animações (Keyframes) */
+        @keyframes fadeInFromLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Estrutura HTML de dois painéis -->
+    <div class="menu-panel">
+        <header>
+            <h1 class="menu-logo">Spectra</h1>
+            <p class="menu-tagline">Navegue pelas dimensões do seu mundo.</p>
+        </header>
+
+        <nav class="main-nav">
+            <a href="dashboard.html" class="nav-item">SpectraMaps</a>
+            <a href="SPCCMN.html" class="nav-item">Community</a>
+            <a href="SPCEV.html" class="nav-item">Events</a>
+            <a href="Config.html" class="nav-item">Configurações</a>
+        </nav>
+    </div>
+
+    <div class="animation-panel">
+        <canvas id="particle-canvas"></canvas>
+    </div>
+
+    <!-- Script da Animação de Partículas -->
+    <script>
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particlesArray;
+
+        function setCanvasSize() {
+            canvas.width = canvas.parentElement.offsetWidth;
+            canvas.height = canvas.parentElement.offsetHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2.5 + 1;
+                this.speedX = Math.random() * 2 - 1;
+                this.speedY = Math.random() * 2 - 1;
+                this.color = getComputedStyle(document.documentElement).getPropertyValue('--cor-particula').trim();
+            }
+            update() {
+                if (this.x > canvas.width || this.x < 0) this.speedX = -this.speedX;
+                if (this.y > canvas.height || this.y < 0) this.speedY = -this.speedY;
+                this.x += this.speedX;
+                this.y += this.speedY;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            setCanvasSize();
+            particlesArray = [];
+            let numberOfParticles = (canvas.height * canvas.width) / 9000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                particlesArray.push(new Particle());
+            }
+        }
+
+        function connect() {
+            let opacityValue = 1;
+            for (let a = 0; a < particlesArray.length; a++) {
+                for (let b = a; b < particlesArray.length; b++) {
+                    let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x))
+                                 + ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+                    if (distance < (canvas.width / 7) * (canvas.height / 7)) {
+                        opacityValue = 1 - (distance / 20000);
+                        ctx.strokeStyle = `rgba(155, 89, 182, ${opacityValue})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+            }
+            connect();
+            requestAnimationFrame(animate);
+        }
+        
+        window.addEventListener('resize', () => {
+            init();
+        });
+
+        init();
+        animate();
+    </script>
+
+</body>
+</html>

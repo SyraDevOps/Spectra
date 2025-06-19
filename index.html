@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- 1. Redirecionamento Automático -->
+    <meta http-equiv="refresh" content="4;url=menu.html">
+
+    <title>Spectra | Carregando...</title>
+
+    <!-- 2. Fontes e Estilos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Reutilizando a paleta de cores do dashboard para consistência */
+        :root {
+            --cor-fundo: #121212;
+            --cor-principal: #9b59b6;
+            --cor-borda-clara: rgba(155, 89, 182, 0.2);
+        }
+
+        /* Configuração geral da página */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--cor-fundo);
+            height: 100vh;
+            /* Centraliza todo o conteúdo na tela */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .splash-container {
+            text-align: center;
+        }
+
+        /* Estilo do logo "Spectra" */
+        .splash-logo {
+            font-size: 6em; /* Tamanho grande e impactante */
+            font-weight: 700;
+            color: var(--cor-principal);
+            position: relative;
+        }
+
+        /* Animação das letras aparecendo uma a uma */
+        .splash-logo span {
+            opacity: 0;
+            animation: fadeInLetter 0.5s forwards;
+        }
+        
+        /* Definindo um atraso diferente para cada letra, criando o efeito de "digitação" */
+        .splash-logo span:nth-child(1) { animation-delay: 0.1s; }
+        .splash-logo span:nth-child(2) { animation-delay: 0.2s; }
+        .splash-logo span:nth-child(3) { animation-delay: 0.3s; }
+        .splash-logo span:nth-child(4) { animation-delay: 0.4s; }
+        .splash-logo span:nth-child(5) { animation-delay: 0.5s; }
+        .splash-logo span:nth-child(6) { animation-delay: 0.6s; }
+        .splash-logo span:nth-child(7) { animation-delay: 0.7s; }
+
+        /* Estilo da barra de carregamento */
+        .loading-bar-container {
+            width: 250px;
+            height: 5px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            margin: 30px auto 0;
+            border: 1px solid var(--cor-borda-clara);
+            overflow: hidden;
+        }
+
+        .loading-bar {
+            width: 0%;
+            height: 100%;
+            background-color: var(--cor-principal);
+            border-radius: 5px;
+            /* Animação da barra progredindo */
+            animation: fillBar 3.5s ease-out forwards;
+            animation-delay: 0.2s;
+        }
+
+
+        /* 3. Definições das Animações (Keyframes) */
+
+        /* Animação para cada letra aparecer */
+        @keyframes fadeInLetter {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Animação para preencher a barra de carregamento */
+        @keyframes fillBar {
+            from {
+                width: 0%;
+            }
+            to {
+                width: 100%;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- 4. Estrutura HTML da Animação -->
+    <div class="splash-container">
+        
+        <!-- O nome do sistema, com cada letra em um span para animar individualmente -->
+        <div class="splash-logo">
+            <span>S</span><span>p</span><span>e</span><span>c</span><span>t</span><span>r</span><span>a</span>
+        </div>
+
+        <!-- A barra de carregamento animada -->
+        <div class="loading-bar-container">
+            <div class="loading-bar"></div>
+        </div>
+
+    </div>
+    
+    <!-- Script de fallback para o redirecionamento, caso a meta tag falhe em algum navegador antigo -->
+    <script>
+        setTimeout(() => {
+            window.location.href = 'menu.html';
+        }, 4000);
+    </script>
+
+</body>
+</html>
